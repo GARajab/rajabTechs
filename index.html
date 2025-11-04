@@ -235,21 +235,50 @@
             color: #ffffff;
         }
 
-        #fw-version {
+        /* Select / dropdown dark styling (applies on all viewports) */
+        .fw-dropdown, #fw-version {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
             padding: 15px 25px;
             font-size: 1.2rem;
             border: 2px solid #0070cc;
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            background-color: rgba(26, 26, 26, 0.95);
+            color: #ffffff;
             width: 300px;
             text-align: center;
+            cursor: pointer;
         }
 
-        #fw-version:focus {
+        .fw-dropdown:focus, #fw-version:focus {
             outline: none;
             border-color: #00a8ff;
             box-shadow: 0 0 15px rgba(0, 168, 255, 0.5);
+        }
+
+        /* Option styling (limited support in some browsers) */
+        .fw-dropdown option, #fw-version option {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            padding: 10px;
+        }
+
+        /* Hide default IE/Edge arrow */
+        select::-ms-expand {
+            display: none;
+        }
+
+        /* Optional custom arrow for modern browsers */
+        .fw-dropdown {
+            background-image:
+                linear-gradient(45deg, transparent 50%, #0c0b0b 50%),
+                linear-gradient(135deg, #0a0a0a 50%, transparent 50%),
+                linear-gradient(to right, rgba(255,255,255,0.03), rgba(255,255,255,0.03));
+            background-position: calc(100% - 20px) calc(50% - 2px), calc(100% - 15px) calc(50% - 2px), 0 0;
+            background-size: 6px 6px, 6px 6px, 100% 100%;
+            background-repeat: no-repeat;
+            padding-right: 40px; /* keep space for arrow */
         }
 
         .check-btn {
@@ -461,34 +490,10 @@
                 gap: 20px;
             }
             
-            #fw-version {
+            #fw-version, .fw-dropdown {
                 width: 250px;
             }
 
-            .fw-dropdown {
-    padding: 15px 25px;
-    font-size: 1.2rem;
-    border: 2px solid #0070cc;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    width: 300px;
-    text-align: center;
-    cursor: pointer;
-}
-
-.fw-dropdown:focus {
-    outline: none;
-    border-color: #00a8ff;
-    box-shadow: 0 0 15px rgba(0, 168, 255, 0.5);
-}
-
-.fw-dropdown option {
-    background: #1a1a1a;
-    color: white;
-    padding: 10px;
-}
-            
             table {
                 font-size: 0.9rem;
             }
@@ -535,14 +540,12 @@
                         <img src="images/PS4.webp" alt="PlayStation 4">
                     </div>
                     <h3>PlayStation 4</h3>
-                    
                 </div>
                 <div class="console-option" data-console="ps5">
                     <div class="image-container">
                         <img src="images/PS5.webp" alt="PlayStation 5">
                     </div>
                     <h3>PlayStation 5</h3>
-                    
                 </div>
             </div>
         </div>
@@ -554,8 +557,8 @@
                 <!-- Type options will be populated by JavaScript -->
             </div>
             <div class="nav-buttons">
-    <button class="nav-btn" id="back-to-console">Back</button>
-</div>
+                <button class="nav-btn" id="back-to-console">Back</button>
+            </div>
         </div>
         
         <!-- Step 3: Firmware Input & Results -->
@@ -572,12 +575,12 @@
 
             <div class="firmware-input-container">
                <div class="input-group">
-    <label for="fw-version">Firmware Version:</label>
-    <select id="fw-version" class="fw-dropdown">
-        <option value="">Select Firmware Version</option>
-        <!-- Options will be populated by JavaScript -->
-    </select>
-</div>
+                    <label for="fw-version">Firmware Version:</label>
+                    <select id="fw-version" class="fw-dropdown">
+                        <option value="">Select Firmware Version</option>
+                        <!-- Options will be populated by JavaScript -->
+                    </select>
+                </div>
                 <div class="version-examples">
                    <p>Select your firmware version from the dropdown</p>
                 </div>
@@ -609,10 +612,8 @@
         
         // Navigation buttons
         const backToConsoleBtn = document.getElementById('back-to-console');
-        
         const backToTypeBtn = document.getElementById('back-to-type');
         const finishBtn = document.getElementById('finish');
-      
         
         // Step 3 elements
         const consoleTypeImage = document.getElementById('console-type-image');
@@ -664,116 +665,105 @@
         ];
 
         // Event listeners for console selection
-   consoleOptions.forEach(option => {
-    option.addEventListener('click', () => {
-        userSelections.console = option.getAttribute('data-console');
-        
-        if (userSelections.console === 'ps4') {
-            // For PS4, go directly to firmware step (step 3)
-            showStep(3);
-            updateStepIndicator(3);
-            updateTypeOptions(); // This will handle PS4 automatically
-        } else {
-            // For PS5, go to type selection (step 2)
-            showStep(2);
-            updateStepIndicator(2);
-            updateTypeOptions();
-        }
-        
-        clearResults();
-        resultsContainer.style.display = 'none';
-        document.getElementById('fw-version').value = '';
-    });
-});
+        consoleOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                userSelections.console = option.getAttribute('data-console');
+                
+                if (userSelections.console === 'ps4') {
+                    // For PS4, go directly to firmware step (step 3)
+                    showStep(3);
+                    updateStepIndicator(3);
+                    updateTypeOptions(); // This will handle PS4 automatically
+                } else {
+                    // For PS5, go to type selection (step 2)
+                    showStep(2);
+                    updateStepIndicator(2);
+                    updateTypeOptions();
+                }
+                
+                clearResults();
+                resultsContainer.style.display = 'none';
+                document.getElementById('fw-version').value = '';
+            });
+        });
 
-function autoCheckFirmwareIfNeeded() {
-    const fwInput = document.getElementById('fw-version').value.trim();
-    if (fwInput && userSelections.console && userSelections.type) {
-        const fwVersion = parseFloat(fwInput);
-        if (!isNaN(fwVersion)) {
-            // Get the appropriate data
-            let data;
-            if (userSelections.console === 'ps5') {
-                data = userSelections.type === 'Digital Edition' ? 
-                       fwDataPS5Digital : fwDataPS5Disk;
-            } else {
-                data = fwDataPS4;
+        function autoCheckFirmwareIfNeeded() {
+            const fwInput = document.getElementById('fw-version').value.trim();
+            if (fwInput && userSelections.console && userSelections.type) {
+                const fwVersion = parseFloat(fwInput);
+                if (!isNaN(fwVersion)) {
+                    // Get the appropriate data
+                    let data;
+                    if (userSelections.console === 'ps5') {
+                        data = userSelections.type === 'Digital Edition' ? 
+                               fwDataPS5Digital : fwDataPS5Disk;
+                    } else {
+                        data = fwDataPS4;
+                    }
+                    
+                    // displayAllFirmwareResults is not implemented in this file.
+                    // If you plan to auto-match partial numeric versions implement that function.
+                }
             }
-            
-            // Display all matching results
-            displayAllFirmwareResults(data, fwVersion, multipleResultsContainer);
-            resultsContainer.style.display = 'block';
         }
-    }
-}
 
         // Navigation event listeners
-backToConsoleBtn.addEventListener('click', () => {
-    showStep(1);
-    updateStepIndicator(1);
-    clearResults();
-    // Clear the results when going back to console selection
-    resultsContainer.style.display = 'none';
-    document.getElementById('fw-version').value = '';
-    
-    // Reset user selections
-    userSelections = {
-        console: null,
-        type: null,
-        typeImage: null,
-        firmware: null
-    };
-});
-     backToTypeBtn.addEventListener('click', () => {
-    // If it's PS4, go back to console selection (step 1)
-    // If it's PS5, go back to type selection (step 2)
-    if (userSelections.console === 'ps4') {
-        showStep(1);
-        updateStepIndicator(1);
-    } else {
-        showStep(2);
-        updateStepIndicator(2);
-    }
-    
-    clearResults();
-    resultsContainer.style.display = 'none';
-    document.getElementById('fw-version').value = '';
-    
-    // Only reset type if it's PS5 (PS4 doesn't use type selection)
-    if (userSelections.console === 'ps5') {
-        userSelections.type = null;
-        userSelections.typeImage = null;
-    }
-});
+        backToConsoleBtn.addEventListener('click', () => {
+            showStep(1);
+            updateStepIndicator(1);
+            clearResults();
+            resultsContainer.style.display = 'none';
+            document.getElementById('fw-version').value = '';
+            
+            userSelections = {
+                console: null,
+                type: null,
+                typeImage: null,
+                firmware: null
+            };
+        });
 
-        
+        backToTypeBtn.addEventListener('click', () => {
+            if (userSelections.console === 'ps4') {
+                showStep(1);
+                updateStepIndicator(1);
+            } else {
+                showStep(2);
+                updateStepIndicator(2);
+            }
+            
+            clearResults();
+            resultsContainer.style.display = 'none';
+            document.getElementById('fw-version').value = '';
+            
+            if (userSelections.console === 'ps5') {
+                userSelections.type = null;
+                userSelections.typeImage = null;
+            }
+        });
 
         finishBtn.addEventListener('click', () => {
-    // Reset the form
-    document.getElementById('fw-version').value = '';
-    resultsContainer.style.display = 'none';
-    showStep(1);
-    updateStepIndicator(1);
-    userSelections = {
-        console: null,
-        type: null,
-        typeImage: null,
-        firmware: null
-    };
-    
-    // Reset type selection (remove the nextToFirmwareBtn line since we removed that button)
-    document.querySelectorAll('#type-options .option-btn').forEach(btn => {
-        btn.classList.remove('selected');
-    });
-});
-
-        // Check firmware function
-
+            document.getElementById('fw-version').value = '';
+            resultsContainer.style.display = 'none';
+            showStep(1);
+            updateStepIndicator(1);
+            userSelections = {
+                console: null,
+                type: null,
+                typeImage: null,
+                firmware: null
+            };
+            
+            document.querySelectorAll('#type-options .option-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+        });
 
         // Function to show a specific step
         function showStep(stepNumber) {
             steps.forEach(step => step.classList.remove('active'));
-            document.getElementById(`step${stepNumber}`).classList.add('active');
+            const el = document.getElementById(`step${stepNumber}`);
+            if (el) el.classList.add('active');
         }
         
         // Function to update step indicators
@@ -789,7 +779,7 @@ backToConsoleBtn.addEventListener('click', () => {
             });
         }
         
-        // Update the updateTypeOptions function
+        // Update type options
         function updateTypeOptions() {
             typeOptions.innerHTML = '';
             
@@ -806,126 +796,117 @@ backToConsoleBtn.addEventListener('click', () => {
                     const button = document.createElement('button');
                     button.className = 'option-btn type-option';
                     
-                    // Create image element
                     const img = document.createElement('img');
                     img.src = type.image;
                     img.alt = type.name;
                     img.className = 'type-image';
                     
-                    // Create text element
                     const text = document.createElement('span');
                     text.className = 'type-text';
                     text.textContent = type.name;
                     
-                    // Add image and text to button
                     button.appendChild(img);
                     button.appendChild(text);
                     
                     button.addEventListener('click', () => {
-    document.querySelectorAll('#type-options .option-btn').forEach(btn => {
-        btn.classList.remove('selected');
-    });
-    button.classList.add('selected');
-    userSelections.type = type.name;
-    userSelections.typeImage = type.image;
-    clearResults();
-    populateFirmwareDropdown();
-    
-    // Automatically go to firmware step
-    showStep(3);
-    updateStepIndicator(3);
-    
-    // Set the console type image and text
-    consoleTypeImage.src = userSelections.typeImage;
-    consoleTypeImage.alt = userSelections.type;
-    consoleTypeText.textContent = `${userSelections.console.toUpperCase()} ${userSelections.type}`;
-});
+                        document.querySelectorAll('#type-options .option-btn').forEach(btn => {
+                            btn.classList.remove('selected');
+                        });
+                        button.classList.add('selected');
+                        userSelections.type = type.name;
+                        userSelections.typeImage = type.image;
+                        clearResults();
+                        populateFirmwareDropdown();
+                        
+                        showStep(3);
+                        updateStepIndicator(3);
+                        
+                        consoleTypeImage.src = userSelections.typeImage;
+                        consoleTypeImage.alt = userSelections.type;
+                        consoleTypeText.textContent = `${userSelections.console.toUpperCase()} ${userSelections.type}`;
+                    });
                     
                     container.appendChild(button);
                     typeOptions.appendChild(container);
                 });
                 
-                // Add horizontal layout
                 typeOptions.style.display = 'flex';
                 typeOptions.style.flexDirection = 'row';
                 typeOptions.style.justifyContent = 'center';
                 typeOptions.style.gap = '40px';
                 typeOptions.style.flexWrap = 'wrap';
                 
-           } else {
-    // For PS4, skip to firmware step directly
-    userSelections.type = 'Standard Edition';
-    userSelections.typeImage = 'images/PS4.webp';
-    showStep(3);
-    updateStepIndicator(3);
-    
-    // Set the console type image and text
-    consoleTypeImage.src = userSelections.typeImage;
-    consoleTypeImage.alt = userSelections.type;
-    consoleTypeText.textContent = `${userSelections.console.toUpperCase()} ${userSelections.type}`;
-    
-    // Populate firmware dropdown for PS4
-    populateFirmwareDropdown();
-}
+            } else {
+                // For PS4, skip to firmware step directly
+                userSelections.type = 'Standard Edition';
+                userSelections.typeImage = 'images/PS4.webp';
+                showStep(3);
+                updateStepIndicator(3);
+                
+                consoleTypeImage.src = userSelections.typeImage;
+                consoleTypeImage.alt = userSelections.type;
+                consoleTypeText.textContent = `${userSelections.console.toUpperCase()} ${userSelections.type}`;
+                
+                populateFirmwareDropdown();
+            }
         }
 
-        // Replace the old function with this:
-function displayFirmwareResult(entry, container) {
-    container.innerHTML = '';
-    
-    const resultGroup = document.createElement('div');
-    resultGroup.className = 'firmware-result-group';
-    
-    const header = document.createElement('div');
-    header.className = 'firmware-header';
-    header.innerHTML = `<h4>${userSelections.console.toUpperCase()} ${userSelections.type} - Firmware ${entry.fwRange}</h4>`;
-    
-    const tableContainer = document.createElement('div');
-    tableContainer.className = 'compatibility-table';
-    
-    const table = document.createElement('table');
-    table.innerHTML = `
-        <thead>
-            <tr>
-                <th>Exploit</th>
-                <th>Status</th>
-                <th>Details</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Webkit</td>
-                <td class="status-${getStatusClass(entry.webkit)}">${entry.webkit}</td>
-                <td>Browser-based exploit</td>
-            </tr>
-            <tr>
-                <td>Lua</td>
-                <td class="status-${getStatusClass(entry.lua)}">${entry.lua}</td>
-                <td>Lua interpreter exploit</td>
-            </tr>
-            <tr>
-                <td>Y2JB</td>
-                <td class="status-${getStatusClass(entry.y2jb)}">${entry.y2jb}</td>
-                <td>Year 2038 bug exploit</td>
-            </tr>
-            <tr>
-                <td>BD-JB</td>
-                <td class="status-${getStatusClass(entry.bd)}">${entry.bd}</td>
-                <td>Blu-ray Java-based exploit</td>
-            </tr>
-        </tbody>
-    `;
-    
-    tableContainer.appendChild(table);
-    resultGroup.appendChild(header);
-    resultGroup.appendChild(tableContainer);
-    container.appendChild(resultGroup);
-}
+        function displayFirmwareResult(entry, container) {
+            container.innerHTML = '';
+            
+            const resultGroup = document.createElement('div');
+            resultGroup.className = 'firmware-result-group';
+            
+            const header = document.createElement('div');
+            header.className = 'firmware-header';
+            header.innerHTML = `<h4>${userSelections.console.toUpperCase()} ${userSelections.type} - Firmware ${entry.fwRange}</h4>`;
+            
+            const tableContainer = document.createElement('div');
+            tableContainer.className = 'compatibility-table';
+            
+            const table = document.createElement('table');
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Exploit</th>
+                        <th>Status</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Webkit</td>
+                        <td class="status-${getStatusClass(entry.webkit)}">${entry.webkit}</td>
+                        <td>Browser-based exploit</td>
+                    </tr>
+                    <tr>
+                        <td>Lua</td>
+                        <td class="status-${getStatusClass(entry.lua)}">${entry.lua}</td>
+                        <td>Lua interpreter exploit</td>
+                    </tr>
+                    <tr>
+                        <td>Y2JB</td>
+                        <td class="status-${getStatusClass(entry.y2jb)}">${entry.y2jb}</td>
+                        <td>Year 2038 bug exploit</td>
+                    </tr>
+                    <tr>
+                        <td>BD-JB</td>
+                        <td class="status-${getStatusClass(entry.bd)}">${entry.bd}</td>
+                        <td>Blu-ray Java-based exploit</td>
+                    </tr>
+                </tbody>
+            `;
+            
+            tableContainer.appendChild(table);
+            resultGroup.appendChild(header);
+            resultGroup.appendChild(tableContainer);
+            container.appendChild(resultGroup);
+        }
 
-function clearResults() {
-    resultsContainer.style.display = 'none';
-    document.getElementById('fw-version').value = '';
-}
+        function clearResults() {
+            resultsContainer.style.display = 'none';
+            document.getElementById('fw-version').value = '';
+        }
 
         function getStatusClass(status) {
             if (status === 'working') return 'working';
@@ -934,34 +915,12 @@ function clearResults() {
         }
 
         // Function to populate firmware dropdown based on console and type
-// Function to populate firmware dropdown based on console and type
-function populateFirmwareDropdown() {
-    const dropdown = document.getElementById('fw-version');
-    dropdown.innerHTML = '<option value="">Select Firmware Version</option>';
-    
-    if (!userSelections.console || !userSelections.type) return;
-    
-    // Get the appropriate data
-    let data;
-    if (userSelections.console === 'ps5') {
-        data = userSelections.type === 'Digital Edition' ? 
-               fwDataPS5Digital : fwDataPS5Disk;
-    } else {
-        data = fwDataPS4;
-    }
-    
-    // Populate dropdown with firmware ranges
-    data.forEach(entry => {
-        const option = document.createElement('option');
-        option.value = entry.fwRange;
-        option.textContent = entry.fwRange;
-        dropdown.appendChild(option);
-    });
-    
-    // Automatically show results when firmware is selected
-    dropdown.addEventListener('change', function() {
-        if (this.value) {
-            // Get the appropriate data
+        function populateFirmwareDropdown() {
+            const dropdown = document.getElementById('fw-version');
+            dropdown.innerHTML = '<option value="">Select Firmware Version</option>';
+            
+            if (!userSelections.console || !userSelections.type) return;
+            
             let data;
             if (userSelections.console === 'ps5') {
                 data = userSelections.type === 'Digital Edition' ? 
@@ -970,21 +929,42 @@ function populateFirmwareDropdown() {
                 data = fwDataPS4;
             }
             
-            // Find the selected entry
-            const selectedEntry = data.find(entry => entry.fwRange === this.value);
+            data.forEach(entry => {
+                const option = document.createElement('option');
+                option.value = entry.fwRange;
+                option.textContent = entry.fwRange;
+                dropdown.appendChild(option);
+            });
             
-            if (selectedEntry) {
-                displayFirmwareResult(selectedEntry, multipleResultsContainer);
-                resultsContainer.style.display = 'block';
-                userSelections.firmware = this.value;
-            }
-        } else {
-            resultsContainer.style.display = 'none';
+            // Remove previous change listeners by cloning the node, then add one
+            const newDropdown = dropdown.cloneNode(true);
+            dropdown.parentNode.replaceChild(newDropdown, dropdown);
+
+            newDropdown.addEventListener('change', function() {
+                if (this.value) {
+                    let data;
+                    if (userSelections.console === 'ps5') {
+                        data = userSelections.type === 'Digital Edition' ? 
+                               fwDataPS5Digital : fwDataPS5Disk;
+                    } else {
+                        data = fwDataPS4;
+                    }
+                    
+                    const selectedEntry = data.find(entry => entry.fwRange === this.value);
+                    
+                    if (selectedEntry) {
+                        displayFirmwareResult(selectedEntry, multipleResultsContainer);
+                        resultsContainer.style.display = 'block';
+                        userSelections.firmware = this.value;
+                    }
+                } else {
+                    resultsContainer.style.display = 'none';
+                }
+            });
         }
-    });
-}
     </script>
-        <!-- Footer with Social Media Links -->
+
+    <!-- Footer with Social Media Links -->
     <footer style="
         margin-top: 40px;
         padding: 20px;
@@ -994,59 +974,51 @@ function populateFirmwareDropdown() {
         width: 100%;
         max-width: 1000px;
     ">
-        <div style="margin-bottom: 15px;">
-            <h3 style="color: #ffffff; margin-bottom: 15px;">Follow Me</h3>
-            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-              
-                <a href="https://youtube.com/@RajabbTechs" target="_blank" style="
-                    color: #ffffff;
-                    text-decoration: none;
-                    padding: 10px 20px;
-                    border: 2px solid #FF0000;
-                    border-radius: 25px;
-                    transition: all 0.3s ease;
-                    background: rgba(255, 0, 0, 0.2);
-                " onmouseover="this.style.background='#FF0000'; this.style.transform='scale(1.05)'" 
-                onmouseout="this.style.background='rgba(255, 0, 0, 0.2)'; this.style.transform='scale(1)'">
-                    <i class="fab fa-youtube"></i>
-                </a>
+       <style>
+/* small local styles for circular social icons */
+.social-links { display:flex; gap:16px; justify-content:center; align-items:center; }
+.social-link {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  text-decoration:none;
+  color:#fff;
+  transition: transform .15s ease, background .15s ease;
+  border:2px solid rgba(255,255,255,0.06);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+}
+.social-link i { font-size:1.2rem; line-height:1; }
 
-                
-                <a href="https://x.com/GaRajab24" target="_blank" style="
-                    color: #ffffff;
-                    text-decoration: none;
-                    padding: 10px 20px;
-                    border: 2px solid #1DA1F2;
-                    border-radius: 25px;
-                    transition: all 0.3s ease;
-                    background: rgba(29, 161, 242, 0.2);
-                " onmouseover="this.style.background='#1DA1F2'; this.style.transform='scale(1.05)'" 
-                onmouseout="this.style.background='rgba(29, 161, 242, 0.2)'; this.style.transform='scale(1)'">
-                    <i class="fab fa-x"></i>
-                </a>
-                
-               
-                  <a href="https://github.com/GARajab" target="_blank" style="
-                    color: #ffffff;
-                    text-decoration: none;
-                    padding: 10px 20px;
-                    border: 2px solid #0070cc;
-                    border-radius: 25px;
-                    transition: all 0.3s ease;
-                    background: rgba(0, 112, 204, 0.2);
-                " onmouseover="this.style.background='#0070cc'; this.style.transform='scale(1.05)'" 
-                onmouseout="this.style.background='rgba(0, 112, 204, 0.2)'; this.style.transform='scale(1)'">
-                    <i class="fab fa-github"></i>
-                </a>
-            </div>
-        </div>
+/* brand colors + hover */
+.social-link.youtube { background: rgba(255,0,0,0.12); border-color:#FF0000; }
+.social-link.youtube:hover { background:#FF0000; transform:scale(1.06); }
+
+.social-link.x { background: rgba(29,161,242,0.12); border-color:#1DA1F2; }
+.social-link.x:hover { background:#1DA1F2; transform:scale(1.06); }
+
+.social-link.github { background: rgba(0,112,204,0.12); border-color:#0070cc; }
+.social-link.github:hover { background:#0070cc; transform:scale(1.06); }
+</style>
+
+<div class="social-links">
+  <a class="social-link youtube" href="https://youtube.com/@RajabbTechs" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+    <i class="fab fa-youtube"></i>
+  </a>
+
+  <a class="social-link x" href="https://x.com/GaRajab24" target="_blank" rel="noopener noreferrer" aria-label="X">
+    <i class="fab fa-x"></i>
+  </a>
+
+  <a class="social-link github" href="https://github.com/GARajab" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+    <i class="fab fa-github"></i>
+  </a>
+</div>
         <p style="color: #cccccc; font-size: 0.9rem; margin: 0;">
             &copy; 2025 RajabTechs. All rights reserved.
         </p>
     </footer>
-
-    </script>
-</body>
-</html>
 </body>
 </html>
