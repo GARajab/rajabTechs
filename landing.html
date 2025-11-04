@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Console Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #e17055;
+            --info: #0984e3;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: var(--light);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .ps4-bg {
+            background: linear-gradient(135deg, #003087, #0072ce);
+        }
+        
+        .ps5-bg {
+            background: linear-gradient(135deg, #000, #5a5a5a);
+        }
+        
+        .userland-bg {
+            background: linear-gradient(135deg, var(--success), #00cec9);
+        }
+        
+        .kernel-bg {
+            background: linear-gradient(135deg, var(--warning), #e17055);
+        }
+        
+        .status-bg {
+            background: linear-gradient(135deg, var(--info), #6c5ce7);
+        }
+        
+        .fw-bg {
+            background: linear-gradient(135deg, #636e72, #b2bec3);
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .option-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .option-text {
+            flex: 1;
+        }
+        
+        .option-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .option-desc {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-upcoming {
+            background: rgba(253, 203, 110, 0.2);
+            color: var(--warning);
+        }
+        
+        .status-released {
+            background: rgba(0, 184, 148, 0.2);
+            color: var(--success);
+        }
+        
+        .status-date {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .fw-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .fw-info:last-child {
+            border-bottom: none;
+        }
+        
+        .fw-platform {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .fw-version {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .fw-date {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .serial-checker {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .serial-input {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .serial-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .admin-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 40px;
+            display: none;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .admin-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .admin-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .form-input {
+            padding: 12px 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            grid-column: 1 / -1;
+        }
+        
+        .toggle-admin {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .toggle-btn {
+            background: transparent;
+            border: none;
+            color: var(--secondary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-form {
+                grid-template-columns: 1fr;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-gamepad"></i>
+                <h1>Console Wizard Dashboard</h1>
+            </div>
+            <div class="user-actions">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-user"></i> Profile
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+            </div>
+        </header>
+        
+        <div class="dashboard">
+            <!-- PS4 Games Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">PS4 Games</h2>
+                    <div class="card-icon ps4-bg">
+                        <i class="fab fa-playstation"></i>
+                    </div>
+                </div>
+                <div class="options">
+                    <div class="option">
+                        <div class="option-icon ps4-bg">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <div class="option-text">
+                            <div class="option-title">Userland Wizard</div>
+                            <div class="option-desc">PS4 userland exploits and tools</div>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="option">
+                        <div class="option-icon kernel-bg">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <div class="option-text">
+                            <div class="option-title">Kernel Wizard</div>
+                            <div class="option-desc">PS4 kernel exploits and tools</div>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="option">
+                        <div class="option-icon userland-bg">
+                            <i class="fas fa-wand-magic-sparkles"></i>
+                        </div>
+                        <div class="option-text">
+                            <div class="option-title">Both Userland & Kernel</div>
+                            <div class="option-desc">Complete PS4 exploitation suite</div>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PS5 Games Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">PS5 Games</h2>
+                    <div class="card-icon ps5-bg">
+                        <i class="fab fa-playstation"></i>
+                    </div>
+                </div>
+                <div class="options">
+                    <div class="option">
+                        <div class="option-icon ps5-bg">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <div class="option-text">
+                            <div class="option-title">Userland Wizard</div>
+                            <div class="option-desc">PS5 userland exploits and tools</div>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="option">
+                        <div class="option-icon kernel-bg">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <div class="option-text">
+                            <div class="option-title">Kernel Wizard</div>
+                            <div class="option-desc">PS5 kernel exploits and tools</div>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="option">
+                        <div class="option-icon userland-bg">
+                            <i class="fas fa-wand-magic-sparkles"></i>
+                        </div>
+                        <div class="option-text">
+                            <div class="option-title">Both Userland & Kernel</div>
+                            <div class="option-desc">Complete PS5 exploitation suite</div>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Jailbreak Status Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Jailbreak Status</h2>
+                    <div class="card-icon status-bg">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="status-list">
+                    <div class="status-item">
+                        <div class="status-name">
+                            <i class="fas fa-bug"></i>
+                            <span>Y2JB</span>
+                        </div>
+                        <div class="status-badge status-upcoming">Upcoming</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-date">Expected: Q4 2023</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-name">
+                            <i class="fas fa-film"></i>
+                            <span>Netflix-N-Hack</span>
+                        </div>
+                        <div class="status-badge status-upcoming">Upcoming</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-date">Expected: Q1 2024</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Firmware Info Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Latest Firmware</h2>
+                    <div class="card-icon fw-bg">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                </div>
+                <div class="fw-list">
+                    <div class="fw-info">
+                        <div class="fw-platform">
+                            <i class="fab fa-playstation ps4-bg" style="padding: 8px; border-radius: 6px;"></i>
+                            <span>PS4</span>
+                        </div>
+                        <div class="fw-version">13.02</div>
+                    </div>
+                    <div class="fw-info">
+                        <div class="fw-date">Released: 2023-08-15</div>
+                    </div>
+                    <div class="fw-info">
+                        <div class="fw-platform">
+                            <i class="fab fa-playstation ps5-bg" style="padding: 8px; border-radius: 6px;"></i>
+                            <span>PS5</span>
+                        </div>
+                        <div class="fw-version">12.02</div>
+                    </div>
+                    <div class="fw-info">
+                        <div class="fw-date">Released: 2023-09-05</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Serial Number Checker -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Serial Number Checker</h2>
+                    <div class="card-icon ps5-bg">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                <p>Check your PS5 firmware version by serial number</p>
+                <div class="serial-checker">
+                    <input type="text" class="serial-input" placeholder="Enter PS5 serial number">
+                    <button class="btn btn-primary">Check</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Admin Panel -->
+        <div class="admin-panel" id="adminPanel">
+            <div class="admin-header">
+                <h2 class="admin-title">Admin Dashboard</h2>
+                <div class="card-icon ps5-bg">
+                    <i class="fas fa-lock"></i>
+                </div>
+            </div>
+            
+            <div class="admin-form">
+                <div class="form-group">
+                    <label class="form-label">PS4 Latest Firmware</label>
+                    <input type="text" class="form-input" value="13.02">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">PS4 Release Date</label>
+                    <input type="text" class="form-input" value="2023-08-15">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">PS5 Latest Firmware</label>
+                    <input type="text" class="form-input" value="12.02">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">PS5 Release Date</label>
+                    <input type="text" class="form-input" value="2023-09-05">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Y2JB Status</label>
+                    <select class="form-input">
+                        <option>Upcoming</option>
+                        <option>Released</option>
+                        <option>Delayed</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Y2JB Expected Date</label>
+                    <input type="text" class="form-input" value="Q4 2023">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Netflix-N-Hack Status</label>
+                    <select class="form-input">
+                        <option>Upcoming</option>
+                        <option>Released</option>
+                        <option>Delayed</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Netflix-N-Hack Expected Date</label>
+                    <input type="text" class="form-input" value="Q1 2024">
+                </div>
+            </div>
+            
+            <div class="admin-actions">
+                <button class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-sync"></i> Reset to Default
+                </button>
+            </div>
+        </div>
+        
+        <div class="toggle-admin">
+            <button class="toggle-btn" id="toggleAdmin">Toggle Admin Panel</button>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Admin Panel
+        document.getElementById('toggleAdmin').addEventListener('click', function() {
+            const adminPanel = document.getElementById('adminPanel');
+            if (adminPanel.style.display === 'none' || adminPanel.style.display === '') {
+                adminPanel.style.display = 'block';
+                this.textContent = 'Hide Admin Panel';
+            } else {
+                adminPanel.style.display = 'none';
+                this.textContent = 'Show Admin Panel';
+            }
+        });
+        
+        // Add hover effects to options
+        const options = document.querySelectorAll('.option');
+        options.forEach(option => {
+            option.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(5px)';
+            });
+            
+            option.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+            });
+        });
+        
+        // Simulate firmware check
+        document.querySelector('.btn-primary').addEventListener('click', function() {
+            const serialInput = document.querySelector('.serial-input');
+            if (serialInput.value.trim() !== '') {
+                alert('Firmware version for serial ' + serialInput.value + ': 12.02');
+            } else {
+                alert('Please enter a serial number');
+            }
+        });
+    </script>
+</body>
+</html>
