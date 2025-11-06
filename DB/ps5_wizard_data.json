@@ -1,0 +1,105 @@
+{
+  "serials": {
+    "AJ13501": {
+      "model": "CFI-10 (USA)",
+      "firmware": "1.00",
+      "bundle": "Ratchet and Clank"
+    },
+    "AJ1594": {
+      "model": "CFI-10 (USA)",
+      "firmware": "2.30",
+      "bundle": "Horizon forbidden west"
+    },
+    "AK9145": {
+      "model": "CFI-11 (USA)",
+      "firmware": "5.10",
+      "bundle": "God of war ragnarok"
+    },
+    "S01-X333": {
+      "model": "CFI-12 (2023)",
+      "firmware": "6.50/7.00",
+      "bundle": "Spider Man 2, EA Sports FC 24"
+    },
+    "S01-X32B": {
+      "model": "CFI-12 (2022)",
+      "firmware": "6.02",
+      "bundle": "Spider Man 2"
+    },
+    "S01-X21B": {
+      "model": "CFI-11 (2021)",
+      "firmware": "4.03/4.50",
+      "bundle": "GT 7 disk included"
+    },
+    "S01-02720": {
+      "model": "CFI-10 Japanese",
+      "firmware": "2.00",
+      "bundle": "Ratchet and Clank"
+    },
+    "F10701": {
+      "model": "CFI-10 Spain/Australia",
+      "firmware": "1.00",
+      "bundle": "Ratchet and Clank"
+    },
+    "S01-1270": {
+      "model": "CFI-10 UK/EU",
+      "firmware": "1.00",
+      "bundle": "Ratchet and Clank"
+    }
+  },
+  "firmwares": {
+    "1.00": [
+      "Ratchet and Clank"
+    ],
+    "2.00": [
+      "Ratchet and Clank"
+    ],
+    "2.30": [
+      "Horizon forbidden west"
+    ],
+    "5.10": [
+      "God of war ragnarok"
+    ],
+    "6.02": [
+      "Spider Man 2"
+    ],
+    "6.50": [
+      "Spider Man 2",
+      "EA Sports FC 24"
+    ],
+    "7.00": [
+      "Spider Man 2",
+      "EA Sports FC 24"
+    ],
+    "4.03": [
+      "GT 7 disk included"
+    ],
+    "4.50": [
+      "GT 7 disk included"
+    ]
+  },
+  "bundles": {
+    "Ratchet and Clank": [
+      "1.00",
+      "2.00"
+    ],
+    "Horizon forbidden west": [
+      "2.30"
+    ],
+    "God of war ragnarok": [
+      "5.10"
+    ],
+    "GT 7 disk included": [
+      "4.03",
+      "4.50"
+    ],
+    "Spider Man 2": [
+      "6.02",
+      "6.50",
+      "7.00"
+    ],
+    "EA Sports FC 24": [
+      "6.50",
+      "7.00"
+    ]
+  }
+}

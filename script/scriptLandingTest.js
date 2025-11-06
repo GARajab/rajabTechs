@@ -1,0 +1,217 @@
+
+:root{
+  --bg-start: #b8ecff;
+  --bg-end: #9fdfff;
+  --accent: #0b0b0b;
+  --muted: rgba(11,11,11,0.6);
+  --btn-bg: #0b0b0b;
+  --btn-text: #fff;
+  --radius: 20px;
+  --max-width: 1320px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg,var(--bg-start),var(--bg-end));
+  color:var(--accent);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:32px;
+}
+
+/* give the main card rounded corners like screenshot */
+.hero{
+  width:100%;
+  max-width:var(--max-width);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border-radius: var(--radius);
+  padding: 36px;
+  box-shadow: 0 10px 30px rgba(14,60,100,0.06);
+}
+
+/* header */
+.site-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+.logo{height:34px; display:block}
+
+/* content layout */
+.hero-inner{
+  display:grid;
+  grid-template-columns: 1fr 540px;
+  gap: 20px;
+  align-items:stretch;
+}
+
+/* left column */
+.left{
+  padding: 40px 20px 40px 20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+}
+.variants{margin-bottom:18px}
+.variant{
+  background:none;
+  border:none;
+  padding:6px 0;
+  margin-right:12px;
+  font-weight:600;
+  color:var(--muted);
+  cursor:pointer;
+}
+.variant.active{border-bottom:3px solid #0b0b0b; color:var(--accent)}
+
+.title{
+  font-family: "Montserrat", "Helvetica Neue", Arial;
+  font-weight:900;
+  font-size:56px;
+  letter-spacing:1px;
+  margin:6px 0 20px 0;
+  line-height:1;
+}
+
+.lead{
+  max-width:640px;
+  font-size:18px;
+  color:var(--muted);
+  margin-bottom:28px;
+}
+
+/* CTA row */
+.cta-row{
+  display:flex;
+  align-items:center;
+  gap:28px;
+  margin-bottom:28px;
+}
+.btn-buy{
+  display:inline-block;
+  background:var(--btn-bg);
+  color:var(--btn-text);
+  padding:14px 28px;
+  text-decoration:none;
+  font-weight:600;
+  border-radius:6px;
+  box-shadow: 0 6px 18px rgba(11,11,11,0.12);
+}
+.price{
+  font-size:28px;
+  font-weight:700;
+}
+
+/* small text and learn more */
+.small-note{
+  color:var(--muted);
+  margin-top:12px;
+}
+.learn-more{
+  margin-top:12px;
+  display:inline-block;
+  font-weight:600;
+  text-decoration:none;
+  color:var(--accent);
+}
+
+/* right column (console + card) */
+.right{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px;
+}
+
+/* big console image placement */
+.console-wrap{
+  position:relative;
+  width:420px;
+  height:680px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:visible;
+}
+.console{
+  max-height:100%;
+  transform: translateX(25px);
+  filter: drop-shadow(0 20px 35px rgba(11,11,11,0.08));
+  user-select:none;
+}
+
+/* DualSense card on the right */
+.dualsense-card{
+  position:absolute;
+  right:12px;
+  top:72px;
+  width:260px;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(6px);
+  border-radius:18px;
+  padding:18px;
+  box-shadow: 0 8px 28px rgba(11,11,11,0.08);
+  border: 1px solid rgba(255,255,255,0.6);
+}
+.dualsense-card h3{
+  margin:0 0 8px 0;
+  font-family:"Montserrat";
+  font-weight:700;
+  font-size:20px;
+}
+.dualsense-card p{
+  margin:0;
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.3;
+  margin-bottom:12px;
+}
+.controller-visual{
+  background: rgba(255,255,255,0.85);
+  border-radius:12px;
+  padding:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.controller-visual img{max-width:110px; display:block}
+.carousel-index{
+  text-align:right;
+  margin-top:10px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* icons in header */
+.icons{display:flex; gap:12px}
+.icon-btn{
+  background:none;
+  border: none;
+  font-size:20px;
+  cursor:pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width:1100px){
+  .hero-inner{grid-template-columns: 1fr 420px}
+  .title{font-size:48px}
+  .console-wrap{width:360px;height:560px}
+}
+
+@media (max-width:880px){
+  body{padding:16px}
+  .hero-inner{grid-template-columns:1fr; gap:20px}
+  .right{order:-1}
+  .console-wrap{width:320px;height:500px}
+  .dualsense-card{position:static; width:100%; margin-top:8px}
+  .title{font-size:36px}
+  .cta-row{flex-direction:column; align-items:flex-start; gap:12px}
+}

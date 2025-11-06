@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/images/siteLogo.svg">
+    <title>PS5 Version Wizard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-gamepad"></i> PS5 Version Wizard</h1>
+        <p>Identify your PS5 model, firmware, and bundle information</p>
+    </header>
+
+    <div class="container">
+        <h2>PS5 Identification Tool</h2>
+        
+        <div class="form-group">
+            <label for="serialInput"><i class="fas fa-barcode"></i> Serial Number</label>
+            
+            <div class="serial-help">
+                <div class="help-text">
+                    <p><i class="fas fa-info-circle"></i> <strong>Where to find your serial number:</strong></p>
+                    <ul>
+                        <li>On the bottom of your PS5 console</li>
+                        <li>On the original packaging</li>
+                        <li>In system settings: Settings → System → System Information</li>
+                    </ul>
+                </div>
+                <div class="serial-image">
+                    <img src="images/ps5-serial-example.jpg" alt="PS5 Serial Number Location" class="serial-example-img">
+                    <p class="image-caption">Serial number location on PS5 console</p>
+                </div>
+            </div>
+            
+            <div class="input-with-icon">
+                <i class="fas fa-hashtag"></i>
+                <input list="serials" id="serialInput" placeholder="Enter your serial number (e.g., AJ13501, S01-X333)">
+                <datalist id="serials"></datalist>
+            </div>
+            <button class="fwCheckBtn" onclick="identifyVersion()">
+                <i class="fas fa-search"></i> Identify Version
+            </button>
+        </div>
+
+        <div class="form-group">
+            <label for="firmwareInput"><i class="fas fa-microchip"></i> Firmware Version</label>
+            <div class="input-with-icon">
+                <i class="fas fa-code-branch"></i>
+                <input list="firmwares" id="firmwareInput" placeholder="Enter firmware version">
+                <datalist id="firmwares"></datalist>
+            </div>
+            <button class="fwCheckBtn" onclick="searchByFirmware()">
+                <i class="fas fa-search"></i> Search Firmware
+            </button>
+        </div>
+
+        <div class="form-group">
+            <label for="bundleInput"><i class="fas fa-box"></i> Bundle Name</label>
+            <div class="input-with-icon">
+                <i class="fas fa-cube"></i>
+                <input list="bundles" id="bundleInput" placeholder="Enter bundle name">
+                <datalist id="bundles"></datalist>
+            </div>
+            <button class="fwCheckBtn" onclick="searchByBundle()">
+                <i class="fas fa-search"></i> Search Bundle
+            </button>
+        </div>
+
+        <div class="result" id="result">
+            <h3><i class="fas fa-poll"></i> Result</h3>
+            <div class="result-content" id="resultContent">
+                Your PS5 information will appear here after search.
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <h4><i class="fas fa-bolt"></i> Quick Search Examples</h4>
+            <div class="quick-buttons">
+                <button class="quick-btn fwCheckBtn" onclick="quickSearch('AJ13501')">
+                    <i class="fas fa-barcode"></i> AJ13501
+                </button>
+                <button class="quick-btn fwCheckBtn" onclick="quickSearch('S01-X333')">
+                    <i class="fas fa-barcode"></i> S01-X333
+                </button>
+                <button class="quick-btn fwCheckBtn" onclick="quickSearchFirmware('4.50')">
+                    <i class="fas fa-microchip"></i> FW 4.50
+                </button>
+                <button class="quick-btn fwCheckBtn" onclick="quickSearchBundle('Spider Man 2')">
+                    <i class="fas fa-box"></i> Spider Man 2
+                </button>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <button class="floating-top-btn fwCheckArrow" id="floatingTopBtn" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
+    <footer>
+        <p>© 2023 PS5 Version Wizard | Gaming Tools</p>
+    </footer>
+
+    <script src="./script/script.js"></script>
+</body>
+</html>

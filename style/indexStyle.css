@@ -1,0 +1,609 @@
+/* Define a modern, light-mode palette */
+:root {
+    --brand-blue: #007AFF; /* Sharp, clean primary color */
+    --bg-light: #F0F2F5; /* Facebook-like background */
+    --bg-card: #FFFFFF; /* Pure white card background (Apple style) */
+    --text-dark: #1C1C1E; /* Very dark gray/black text */
+    --text-muted: #6C757D;
+    --status-success: #34C759;
+    --status-warning: #FF9500;
+    --status-danger: #FF3B30;
+    --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.08); /* Apple-like soft shadow */
+    --shadow-hover: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Base & Background --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    transition: background-color 0.4s; /* Smooth transition for theme change */
+}
+
+.container {
+    max-width: 900px;
+    width: 100%;
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: var(--shadow-subtle);
+    text-align: center;
+    border: 1px solid #E5E5E5;
+    transition: background-color 0.4s, box-shadow 0.4s; /* Smooth transition */
+}
+
+/* --- Typography & Headers --- */
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+    color: var(--text-dark);
+    font-weight: 700;
+    transition: color 0.4s;
+}
+
+.subtitle {
+    font-size: 1rem;
+    margin-bottom: 30px;
+    color: var(--text-muted);
+    font-weight: 400;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #F0F0F0;
+    transition: color 0.4s, border-color 0.4s;
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    color: var(--text-dark);
+    font-weight: 600;
+    transition: color 0.4s;
+}
+
+.step {
+    display: none;
+    animation: fadeIn 0.4s ease-out;
+    min-height: 350px;
+    padding-top: 10px;
+}
+
+.step.active {
+    display: block;
+}
+
+/* --- Selection Cards (Console & Type) --- */
+.options-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.option-card {
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 25px;
+    width: 300px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border: 1px solid #E5E5E5;
+    box-shadow: var(--shadow-subtle);
+    text-align: center;
+}
+
+.option-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--brand-blue);
+    box-shadow: var(--shadow-hover);
+}
+
+.option-card.selected {
+    border-color: var(--brand-blue);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.4); /* Focus ring effect */
+    background-color: #F8F8FF;
+}
+
+.image-container {
+    height: 180px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.option-card img {
+    max-width: 90%;
+    max-height: 100%;
+    object-fit: contain;
+    /* Simple grayscale filter for elegance, removed on selection/hover */
+    filter: grayscale(0.2); 
+    transition: all 0.3s;
+}
+
+.option-card.selected img {
+    filter: grayscale(0);
+}
+
+.option-card h3 {
+    font-size: 1.6rem;
+    color: var(--text-dark);
+    font-weight: 600;
+    margin-bottom: 5px;
+    transition: color 0.4s;
+}
+
+.option-card p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    transition: color 0.4s;
+}
+
+/* --- Step 3 Display and Input --- */
+.display-card {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background: var(--bg-card);
+    padding: 20px 30px;
+    border-radius: 8px;
+    border-left: 5px solid var(--brand-blue);
+    margin-bottom: 30px;
+    box-shadow: var(--shadow-subtle);
+    transition: background 0.4s, box-shadow 0.4s;
+}
+
+.display-card img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.type-info {
+    text-align: left;
+}
+
+.type-info h2 {
+    color: var(--text-dark);
+    font-size: 1.6rem;
+    margin-bottom: 5px;
+}
+
+.type-info p {
+    color: var(--brand-blue);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* --- Firmware Input Styles --- */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.input-group label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    transition: color 0.4s;
+}
+
+.fw-dropdown {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border: 1px solid #CED4DA;
+    border-radius: 6px;
+    background-color: var(--bg-card);
+    color: var(--text-dark);
+    width: 280px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.fw-dropdown:hover {
+    border-color: var(--brand-blue);
+}
+
+.fw-dropdown:focus {
+    outline: none;
+    border-color: var(--brand-blue);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25);
+}
+
+.version-examples {
+    margin-top: 10px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    transition: color 0.4s;
+}
+
+/* --- Results Styles --- */
+#results-container {
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 1px solid #E5E5E5;
+}
+
+.results-header h3 {
+    color: var(--brand-blue);
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.firmware-result-group {
+    background: var(--bg-card);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: var(--shadow-subtle);
+    border: 1px solid #E5E5E5;
+    transition: all 0.4s;
+}
+
+.firmware-header h4 {
+    color: var(--text-dark);
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #F0F0F0;
+    font-weight: 500;
+    transition: color 0.4s, border-color 0.4s;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-card);
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #F0F0F0;
+    transition: background 0.4s, border-color 0.4s;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #F0F0F0;
+    transition: border-color 0.4s;
+}
+
+th {
+    background: #F8F8F8;
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    transition: background 0.4s, color 0.4s;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.status-working { color: var(--status-success); font-weight: 600; }
+.status-not-working { color: var(--status-danger); font-weight: 600; }
+.status-not-confirmed { color: var(--status-warning); font-weight: 600; }
+
+/* --- Navigation & Progress --- */
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.nav-btn, .check-btn {
+    background: var(--brand-blue);
+    border: none;
+    border-radius: 20px; /* Rounded pill buttons (Apple/iOS style) */
+    padding: 10px 22px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 122, 255, 0.3);
+}
+
+.nav-btn:hover, .check-btn:hover {
+    background: #0069D9;
+    box-shadow: 0 4px 8px rgba(0, 122, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+.nav-btn.secondary {
+    background: transparent;
+    border: 1px solid #CED4DA;
+    color: var(--text-muted);
+    box-shadow: none;
+}
+
+.nav-btn.secondary:hover {
+    background: #F8F8F8;
+    color: var(--brand-blue);
+    border-color: var(--brand-blue);
+}
+
+/* ========================================================================= */
+/* --- Progress Bar (Aligned & Centered Lines) --- */
+/* ========================================================================= */
+
+.progress-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+  position: relative;
+  gap: 50px; /* consistent spacing between steps */
+}
+
+.progress-step {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: #E5E5E5;
+  color: var(--text-dark);
+  border: 2px solid #E5E5E5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  z-index: 1;
+  transition: all 0.4s ease;
+}
+
+/* Connector lines between circles */
+.progress-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%; /* center vertically */
+  left: 109%;
+  width: 50px; /* same as gap */
+  height: 3px;
+  background-color: #E5E5E5;
+  transform: translateY(-50%);
+  z-index: 0;
+  transition: background-color 0.4s ease;
+}
+
+/* Active step */
+.progress-step.active {
+  background-color: var(--brand-blue);
+  color: white;
+  border-color: var(--brand-blue);
+}
+
+/* Completed step (green) */
+.progress-step.completed {
+  background-color: var(--status-success);
+  color: white;
+  border-color: var(--status-success);
+}
+
+/* Line between completed steps */
+.progress-step.completed::after {
+  background-color: var(--status-success);
+}
+
+/* Dark mode adjustments */
+.dark-mode .progress-step {
+  background-color: #333;
+  border-color: #333;
+  color: var(--text-muted);
+}
+
+.dark-mode .progress-step::after {
+  background-color: #333;
+}
+
+.dark-mode .progress-step.active {
+  background-color: var(--brand-blue);
+  color: #fff;
+  border-color: var(--brand-blue);
+}
+
+.dark-mode .progress-step.completed {
+  background-color: var(--status-success);
+  border-color: var(--status-success);
+  color: #fff;
+}
+
+
+/* --- Animations --- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .container {
+        padding: 30px 15px;
+    }
+    .display-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+        padding: 15px;
+    }
+    .type-info {
+        text-align: center;
+    }
+    .fw-dropdown {
+        width: 90%;
+    }
+    .nav-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .nav-btn, .check-btn {
+        width: 100%;
+    }
+}
+
+/* ========================================================================= */
+/* --- DARK MODE STYLES (REQUIRED FOR TOGGLE FUNCTIONALITY) --- */
+/* ========================================================================= */
+
+.dark-mode {
+    /* REDEFINE VARIABLES for Dark Mode */
+    --brand-blue: #5B95F2; /* Lighter blue for dark background */
+    --bg-light: #121212; /* Dark background */
+    --bg-card: #1E1E1E; /* Dark card background */
+    --text-dark: #FFFFFF; /* White text */
+    --text-muted: #B0B0B0;
+    --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.4); 
+    --shadow-hover: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+.dark-mode body {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}
+
+.dark-mode .container {
+    border: 1px solid #333333;
+}
+
+.dark-mode .subtitle {
+    border-bottom-color: #333333;
+}
+
+.dark-mode .option-card {
+    border-color: #333333;
+}
+
+.dark-mode .option-card.selected {
+    background-color: #282828;
+}
+
+.dark-mode .display-card {
+    border-left-color: var(--brand-blue);
+    background: var(--bg-card);
+}
+
+.dark-mode #results-container {
+    border-top-color: #333333;
+}
+
+.dark-mode .firmware-result-group {
+    border: 1px solid #333333;
+}
+
+.dark-mode .firmware-header h4 {
+    border-bottom-color: #333333;
+}
+
+.dark-mode th {
+    background: #282828;
+}
+.dark-mode table {
+    border: 1px solid #333333;
+}
+.dark-mode th, .dark-mode td {
+    border-bottom-color: #333333;
+}
+
+.dark-mode .fw-dropdown {
+    border-color: #444444;
+    color: var(--text-dark);
+}
+
+/* Ensure progress bar links stand out in dark mode */
+.dark-mode .progress-step {
+    background-color: #333333;
+    border-color: #333333;
+    color: var(--text-muted);
+}
+
+.dark-mode .progress-step:not(:last-child):after {
+    background-color: #333333;
+}
+
+.dark-mode .nav-btn.secondary {
+    border-color: #444444;
+}
+.dark-mode .nav-btn.secondary:hover {
+    background: #282828;
+}
+
+/* ========================================================================= */
+/* --- THEME TOGGLE STYLES --- */
+/* ========================================================================= */
+
+.theme-toggle-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+/* Hide checkbox */
+.theme-toggle-input {
+  display: none;
+}
+
+/* Toggle track */
+.theme-toggle-slider {
+  position: relative;
+  width: 70px;
+  height: 36px;
+  background: linear-gradient(135deg, #e0e0e0, #fafafa);
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Knob (acts as sun/moon) */
+.theme-toggle-slider::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #FFD93D 60%, #FEC260 100%);
+  box-shadow: 0 0 12px rgba(255, 217, 61, 0.5);
+  transition: all 0.5s ease;
+}
+
+/* Hover: gentle glow */
+.theme-toggle-slider:hover::after {
+  box-shadow: 0 0 15px rgba(255, 217, 61, 0.6);
+}
+
+/* Dark mode (moon) */
+.theme-toggle-input:checked + .theme-toggle-slider {
+  background: linear-gradient(135deg, #1e1e1e, #2b2b2b);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.theme-toggle-input:checked + .theme-toggle-slider::after {
+  transform: translateX(34px);
+  background: radial-gradient(circle at 30% 30%, #dfe9f3 40%, #b0bec5 100%);
+  box-shadow: 0 0 10px rgba(176, 190, 197, 0.4),
+              inset -6px -6px 0 0 #1e1e1e; /* small crescent shadow to look like moon */
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Official Console Firmware Status</title>
+    <link rel="stylesheet" href="/style/indexStyle.css">
+    
+</head>
+<body>
+<div class="theme-toggle-container">
+  <input type="checkbox" id="theme-toggle" class="theme-toggle-input">
+  <label for="theme-toggle" class="theme-toggle-slider"></label>
+</div>
+    <div class="container">
+        <h1><i class="fas fa-microchip"></i> Firmware Status Lookup</h1>
+        <p class="subtitle">Search the database for exploit compatibility by console and version.</p>
+        
+        <div class="progress-bar">
+            <div class="progress-step active" id="step1-indicator">1</div>
+            <div class="progress-step" id="step2-indicator">2</div>
+            <div class="progress-step" id="step3-indicator">3</div>
+        </div>
+        
+        <div class="step active" id="step1">
+            <h2>Step 1: Select Your Console Platform</h2>
+            <div class="options-grid">
+                <div class="option-card" data-console="ps4">
+                    <div class="image-container">
+                        <img src="images/PS4.webp" alt="PlayStation 4">
+                    </div>
+                    <h3>PlayStation 4</h3>
+                    <p>Standard, Slim, and Pro models</p>
+                </div>
+                <div class="option-card" data-console="ps5">
+                    <div class="image-container">
+                        <img src="images/PS5.webp" alt="PlayStation 5">
+                    </div>
+                    <h3>PlayStation 5</h3>
+                    <p>Digital and Disc Editions</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="step" id="step2">
+            <h2>Step 2: Choose Console Edition</h2>
+            <div class="options-grid" id="type-options">
+                </div>
+            <div class="nav-buttons">
+                <button class="nav-btn secondary" id="back-to-console"><i class="fas fa-chevron-left"></i> Back to Platform</button>
+            </div>
+        </div>
+        
+        <div class="step" id="step3">
+            <div class="display-card">
+                <img id="console-type-image" src="" alt="Console Type">
+                <div class="type-info">
+                    <h2 id="step3-title">Step 3: Enter Current Firmware Version</h2>
+                    <p id="console-type-text"></p>
+                </div>
+            </div>
+
+            <div class="firmware-input-container">
+               <div class="input-group">
+                    <label for="fw-version"><i class="fas fa-code-branch"></i> Firmware Version:</label>
+                    <select id="fw-version" class="fw-dropdown">
+                        <option value="">-- Select Version --</option>
+                        </select>
+                </div>
+                <div class="version-examples">
+                   <p><i class="fas fa-info-circle"></i> Select the version currently installed on your console.</p>
+                </div>
+            </div>
+
+            <div id="results-container" style="display: none;">
+                <div class="results-header">
+                    <h3><i class="fas fa-chart-line"></i> Exploit Compatibility Report</h3>
+                </div>
+                <div id="multiple-results-container">
+                    </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn secondary" id="back-to-type"><i class="fas fa-angle-left"></i> Previous Step</button>
+                <button class="nav-btn" id="finish"><i class="fas fa-redo-alt"></i> Start New Search</button>
+            </div>
+        </div>
+    </div>
+    <script src="DB/firmware_data.js"></script>
+    <script src="script/indexScript.js"></script>    
+</body>
+</html>
